@@ -11,6 +11,17 @@ export const submitForm = async (req, res) => {
             return res.status(400).json({ success: false, message: validationError });
         }
 
+        const now = new Date();
+        const formattedTimestamp = now.toLocaleString("en-US", {
+            day: "2-digit",
+            month: "short",    // <-- Important (Nov, Dec, etc.)
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: true
+        }).replace(",", "");
+
         // Send to SheetDB
         const sheetResponse = await axios.post(process.env.SHEETDB_URL, {
             data: [
@@ -19,10 +30,7 @@ export const submitForm = async (req, res) => {
                     Email,
                     Number,
                     Address,
-                    Timestamp: new Date().toLocaleString("en-IN", {
-                        timeZone: "Asia/Kolkata",
-                        hour12: true,
-                    }),
+                    Timestamp: formattedTimestamp,
                 },
             ],
         });
