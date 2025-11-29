@@ -19,7 +19,10 @@ export const submitForm = async (req, res) => {
                     Email,
                     Number,
                     Address,
-                    Timestamp: new Date().toLocaleString("en-IN"),
+                    Timestamp: new Date().toLocaleString("en-IN", {
+                        timeZone: "Asia/Kolkata",
+                        hour12: true,
+                    }),
                 },
             ],
         });
