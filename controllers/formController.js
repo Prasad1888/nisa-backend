@@ -30,7 +30,7 @@ export const submitForm = async (req, res) => {
                     Email,
                     Number,
                     Address,
-                    Timestamp: formattedTimestamp,
+                    Timestamp: "'" + formattedTimestamp,
                 },
             ],
         });
