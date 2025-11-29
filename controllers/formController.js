@@ -14,13 +14,17 @@ export const submitForm = async (req, res) => {
         const now = new Date();
         const formattedTimestamp = now.toLocaleString("en-US", {
             day: "2-digit",
-            month: "short",    // <-- Important (Nov, Dec, etc.)
+            month: "short",    // Nov
             year: "numeric",
             hour: "2-digit",
             minute: "2-digit",
             second: "2-digit",
-            hour12: true
+            hour12: true,
+            timeZone: "Asia/Kolkata"   // <-- IMPORTANT: force IST
         }).replace(",", "");
+
+        // Prepend apostrophe so Sheets keeps it as plain text
+        const safeTimestamp = "'" + formattedTimestamp;
 
         // Send to SheetDB
         const sheetResponse = await axios.post(process.env.SHEETDB_URL, {
@@ -30,7 +34,7 @@ export const submitForm = async (req, res) => {
                     Email,
                     Number,
                     Address,
-                    Timestamp: "'" + formattedTimestamp,
+                    Timestamp: safeTimestamp,
                 },
             ],
         });
